@@ -1,13 +1,20 @@
 package com.android.libbase;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class MainActivity extends AppCompatActivity {
+import com.android.libbase.BaseActivity.BaseActivity;
+
+public class MainActivity extends BaseActivity {
+
+    @Override
+    protected int getLayout() {
+        return R.layout.activity_main;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setToolbar("hello");
+        setToolbarBackButton(R.drawable.ic_action_back);
     }
 }
