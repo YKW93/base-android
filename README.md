@@ -1,2 +1,2 @@
 # base-android
-안드로이드 base 
+안드로이드 base library
