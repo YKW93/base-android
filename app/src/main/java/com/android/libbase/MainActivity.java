@@ -1,13 +1,24 @@
 package com.android.libbase;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class MainActivity extends AppCompatActivity {
+import com.android.libbase.BaseActivity.BaseToolbarActivity;
+
+
+public class MainActivity extends BaseToolbarActivity {
+
+    @Override
+    protected int getLayout() {
+        return R.layout.activity_main;
+    }
+
+    @Override
+    public String getToolbarTitle() {
+        return "hello world";
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
     }
 }

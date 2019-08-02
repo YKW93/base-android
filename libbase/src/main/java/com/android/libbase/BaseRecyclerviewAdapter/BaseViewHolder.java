@@ -1,9 +1,12 @@
 package com.android.libbase.BaseRecyclerviewAdapter;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
+
+import com.android.libbase.BaseRecyclerviewAdapter.listener.BaseRecyclerListener;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
 
 public abstract class BaseViewHolder<T, L extends BaseRecyclerListener> extends RecyclerView.ViewHolder {
 
