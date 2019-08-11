@@ -1,4 +1,4 @@
-package com.android.libbase;
+package com.android.baseApp;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

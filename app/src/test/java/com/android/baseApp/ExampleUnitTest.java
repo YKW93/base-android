@@ -1,4 +1,4 @@
-package com.android.libbase;
+package com.android.baseApp;
 
 import org.junit.Test;
 

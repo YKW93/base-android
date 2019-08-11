@@ -1,12 +1,12 @@
-package com.android.libbase.BaseRecyclerviewAdapter;
+package com.android.libbase.recyclerview;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.android.libbase.BaseRecyclerviewAdapter.listener.BaseRecyclerListener;
-import com.android.libbase.BaseRecyclerviewAdapter.listener.OnLoadMoreListener;
+import com.android.libbase.recyclerview.BaseViewHolder.ItemViewHolder;
+import com.android.libbase.recyclerview.BaseViewHolder.ProgressViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,12 +14,15 @@ import java.util.List;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
-public abstract class GenericRVAdapter<T, L extends BaseRecyclerListener, VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter {
+
+public abstract class GenericRVAdapter<T, L extends com.android.baseApp.baseRecyclerviewAdapter.listener.BaseRecyclerListener> extends RecyclerView.Adapter {
 
     private static int ITEM_VIEW = 0;
     private static int ITEM_PROGRESS = 1;
@@ -27,7 +30,7 @@ public abstract class GenericRVAdapter<T, L extends BaseRecyclerListener, VH ext
     private List<T> items;
     private L listener;
     private LayoutInflater layoutInflater;
-    private OnLoadMoreListener onLoadMoreListener;
+    private com.android.baseApp.baseRecyclerviewAdapter.listener.OnLoadMoreListener onLoadMoreListener;
     private RecyclerView.LayoutManager layoutManager;
 
     private boolean isLoading;
@@ -39,24 +42,22 @@ public abstract class GenericRVAdapter<T, L extends BaseRecyclerListener, VH ext
     }
 
     @LayoutRes
-    public abstract int getProgressLayout();
+    protected abstract int getProgressLayout();
+
+    @LayoutRes
+    protected abstract int getItemLayout(int viewType);
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
+
+        Context context = viewGroup.getContext();
+
         if (viewType == ITEM_PROGRESS) {
-            return new DefaultVH(inflate(getProgressLayout(), viewGroup));
+            ViewDataBinding viewDataBinding = DataBindingUtil.inflate(LayoutInflater.from(context), getProgressLayout(), viewGroup, false);
+            return new ProgressViewHolder(viewDataBinding);
         }
-        return onCreateHolder(viewGroup, viewType);
-    }
-
-    public abstract VH onCreateHolder(ViewGroup parent, int viewType);
-
-    protected class DefaultVH extends RecyclerView.ViewHolder {
-
-        DefaultVH(@NonNull View itemView) {
-            super(itemView);
-        }
+        return new ItemViewHolder(DataBindingUtil.inflate(LayoutInflater.from(context), getItemLayout(viewType), viewGroup, false));
     }
 
     @Override
@@ -69,11 +70,10 @@ public abstract class GenericRVAdapter<T, L extends BaseRecyclerListener, VH ext
         if (getItemViewType(position) == ITEM_PROGRESS)
             return;
 
-        onBind(holder, item, listener);
+        onBindView(((ItemViewHolder)holder).binding, (ItemViewHolder)holder, item, holder.getItemViewType(), listener);
     }
 
-    public abstract void onBind(RecyclerView.ViewHolder holder, T item, @Nullable L listener);
-
+    public abstract void onBindView(ViewDataBinding binding, ItemViewHolder viewHolder, T item, int viewType, @Nullable L listener);
 
     @Override
     public int getItemCount() {
@@ -177,7 +177,7 @@ public abstract class GenericRVAdapter<T, L extends BaseRecyclerListener, VH ext
         return inflate(layout, parent, false);
     }
 
-    public void setOnLoadMoreListener(OnLoadMoreListener onLoadMoreListener) {
+    public void setOnLoadMoreListener(com.android.baseApp.baseRecyclerviewAdapter.listener.OnLoadMoreListener onLoadMoreListener) {
         this.onLoadMoreListener = onLoadMoreListener;
     }
 

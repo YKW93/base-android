@@ -1,23 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<layout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:gravity="center">
+        xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+        <variable
+                name="item"
+                type="com.android.baseApp.AdapterModel"/>
+    </data>
 
-    <ImageView
-            android:layout_width="wrap_content"
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_launcher_background"/>
+            android:layout_gravity="center_horizontal"
+            android:gravity="center">
+        
+        <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                setImage="@{item.imageUrl}"/>
 
-    <TextView
-            android:id="@+id/tv_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="Dummy"/>
+        <TextView
+                android:id="@+id/tv_user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{item.title}"
+                android:layout_margin="10dp"/>
 
-</LinearLayout>
+        <TextView
+                android:id="@+id/tv_user_age"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{item.subTitle}"/>
+    </LinearLayout>
+</layout>
