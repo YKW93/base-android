@@ -7,6 +7,7 @@ import com.android.baseApp.baseRecyclerviewAdapter.listener.OnLoadMoreListener;
 import com.android.baseApp.databinding.ActivityMainBinding;
 import com.android.libbase.recyclerview.RVModel;
 import com.android.libbase.ui.base.BaseActivity;
+import com.hugocastelani.waterfalltoolbar.Dp;
 
 import java.util.Arrays;
 import java.util.List;
@@ -28,6 +29,10 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         mainBinding = (ActivityMainBinding) getViewDataBinding();
         mainBinding.setActivityMain(this);
+
+        mainBinding.toolbarLayout.waterfallToolbar.setRecyclerView(mainBinding.recyclerview);
+        mainBinding.toolbarLayout.waterfallToolbar.setFinalElevation(new Dp(10).toPx());
+        mainBinding.toolbarLayout.waterfallToolbar.setScrollFinalPosition(4);
 
         mainBinding.recyclerview.setLayoutManager(new LinearLayoutManager(this));
         GenericRVAdapterTest adapter = new GenericRVAdapterTest(getBaseContext(), null);
