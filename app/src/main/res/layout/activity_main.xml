@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:bind="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools">
 
     <data>
         <variable
                 name="activityMain"
                 type="com.android.baseApp.MainActivity"/>
+        <variable
+                name="toolbar"
+                type="com.android.libbase.databinding.configurations.ToolbarConfiguration"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -18,7 +22,8 @@
                 layout="@layout/toolbar_layout"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent">
+                app:layout_constraintRight_toRightOf="parent"
+                bind:config="@{toolbar}">
         </include>
 
         <androidx.recyclerview.widget.RecyclerView

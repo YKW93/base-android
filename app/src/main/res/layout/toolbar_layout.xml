@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+        xmlns:bind="http://schemas.android.com/apk/res-auto">
 
     <data>
+        <import type="android.view.View"/>
+
         <variable
-                name="title"
-                type="String"/>
+                name="config"
+                type="com.android.libbase.databinding.configurations.ToolbarConfiguration"/>
     </data>
 
     <com.hugocastelani.waterfalltoolbar.WaterfallToolbar
@@ -24,8 +26,17 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:textColor="@android:color/black"
-                    android:visibility="@{title != null ? View.VISIBLE: View.GONE}"
-                    android:text="@{title}"/>
+                    android:visibility="@{config.title != null || !config.title.isEmpty() ? View.VISIBLE : View.GONE}"
+                    android:text="@{config.title}"/>
+
+            <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end|center_vertical"
+                    android:layout_marginEnd="10dp"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    bind:imgRes="@{config.imageDrawable}"
+                    bind:navigationOnClickListener="@{config.listener}"/>
         </androidx.appcompat.widget.Toolbar>
 
     </com.hugocastelani.waterfalltoolbar.WaterfallToolbar>

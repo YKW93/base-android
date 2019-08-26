@@ -3,6 +3,7 @@ package com.android.libbase.ui.base;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 
+import com.android.libbase.databinding.configurations.ToolbarConfiguration;
 import com.android.libbase.utils.CommonUtils;
 
 import androidx.annotation.LayoutRes;
@@ -15,6 +16,7 @@ public abstract class BaseActivity<T extends ViewDataBinding> extends AppCompatA
 
     private ProgressDialog mProgressDialog;
     private T mViewDataBinding;
+    private ToolbarConfiguration toolbarConfiguration = new ToolbarConfiguration();
 
     @LayoutRes
     public abstract int getLayoutId();
@@ -23,6 +25,7 @@ public abstract class BaseActivity<T extends ViewDataBinding> extends AppCompatA
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mViewDataBinding = DataBindingUtil.setContentView(this, getLayoutId());
+        initView();
     }
 
     public void hideLoading() {
@@ -39,4 +42,10 @@ public abstract class BaseActivity<T extends ViewDataBinding> extends AppCompatA
     public T getViewDataBinding() {
         return mViewDataBinding;
     }
+
+    protected ToolbarConfiguration getToolbarConfiguration() {
+        return toolbarConfiguration;
+    }
+
+    protected abstract void initView();
 }

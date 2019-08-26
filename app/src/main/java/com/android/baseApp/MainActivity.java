@@ -2,6 +2,8 @@ package com.android.baseApp;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.View;
+import android.widget.Toast;
 
 import com.android.baseApp.baseRecyclerviewAdapter.listener.OnLoadMoreListener;
 import com.android.baseApp.databinding.ActivityMainBinding;
@@ -9,6 +11,7 @@ import com.android.libbase.recyclerview.RVModel;
 import com.android.libbase.ui.base.BaseActivity;
 import com.hugocastelani.waterfalltoolbar.Dp;
 
+import java.time.chrono.MinguoChronology;
 import java.util.Arrays;
 import java.util.List;
 
@@ -29,10 +32,30 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         mainBinding = (ActivityMainBinding) getViewDataBinding();
         mainBinding.setActivityMain(this);
+    }
+
+    @Override
+    protected void initView() {
+        setToolbar();
+        setRecyclerView();
+    }
+
+    private void setToolbar() {
+        mainBinding.setToolbar(getToolbarConfiguration());
+        getToolbarConfiguration().setConfiguration("툴바 제목", R.drawable.ic_home, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getBaseContext(), "클릭", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         mainBinding.toolbarLayout.waterfallToolbar.setRecyclerView(mainBinding.recyclerview);
         mainBinding.toolbarLayout.waterfallToolbar.setFinalElevation(new Dp(10).toPx());
         mainBinding.toolbarLayout.waterfallToolbar.setScrollFinalPosition(4);
+
+    }
+
+    private void setRecyclerView() {
 
         mainBinding.recyclerview.setLayoutManager(new LinearLayoutManager(this));
         GenericRVAdapterTest adapter = new GenericRVAdapterTest(getBaseContext(), null);
