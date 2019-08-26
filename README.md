@@ -1,5 +1,89 @@
 # base-android
-안드로이드 DataBinding BaseClass 설계
+Android DataBinding BaseClass 설계
+
+## Toolbar (using DataBinding) Example
+
+#### ToolbarConfiguration
+- BaseObservable를 활용해서 툴바 tiitle, image 값 
+
+```Java
+public class ToolbarConfiguration extends BaseObservable {
+    private String title;
+    @DrawableRes
+    private Integer imageDrawable;
+    private View.OnClickListener listener;
+
+    @Bindable
+    public String getTitle() {
+        return title;
+    }
+
+    @Bindable
+    public Integer getImageDrawable() {
+        return imageDrawable;
+    }
+
+    @Bindable
+    public View.OnClickListener getListener() {
+        return listener;
+    }
+
+    public void setConfiguration(String title, Integer imageDrawable, View.OnClickListener listener) {
+        this.title = title;
+        this.imageDrawable = imageDrawable;
+        this.listener = listener;
+        notifyChange();
+    }
+}
+```
+
+#### Base Toolbar layout (xml) 
+- 필요한 xml에 include 이용해서 사용
+```
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:bind="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="android.view.View"/>
+
+        <variable
+                name="config"
+                type="com.android.libbase.databinding.configurations.ToolbarConfiguration"/>
+    </data>
+
+    <com.hugocastelani.waterfalltoolbar.WaterfallToolbar
+            android:id="@+id/waterfall_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize">
+
+        <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/white">
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textColor="@android:color/black"
+                    android:visibility="@{config.title != null || !config.title.isEmpty() ? View.VISIBLE : View.GONE}"
+                    android:text="@{config.title}"/>
+
+            <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end|center_vertical"
+                    android:layout_marginEnd="10dp"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    bind:imgRes="@{config.imageDrawable}"
+                    bind:navigationOnClickListener="@{config.listener}"/>
+        </androidx.appcompat.widget.Toolbar>
+
+    </com.hugocastelani.waterfalltoolbar.WaterfallToolbar>
+</layout>
+````
 
 ## BaseRecyclerview(using DataBinding) Example
 
