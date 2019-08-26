@@ -1,9 +1,11 @@
 # base-android
 안드로이드 DataBinding BaseClass 설계
 
-## BaseRecyclerview Example
+## BaseRecyclerview(using DataBinding) Example
 
 #### Sample Adapter 
+- Multi View Type 처리 가능
+- Endless scroll (load more)
 
 ```Java
 
