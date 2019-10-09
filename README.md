@@ -89,21 +89,24 @@ public class ToolbarConfiguration extends BaseObservable {
 
 #### Sample Adapter 
 - Multi View Type 처리 가능
-- Endless scroll (load more)
+- ~~Endless scroll (load more)~~
 
 ```Java
 
-public class MyAdapter extends GenericRVAdapter<RVModel, OnRecyclerPositionClickListener> {
+public class GenericRVAdapterTest extends GenericRVAdapter<RVModel, OnRecyclerPositionClickListener> {
 
-    public int NEW_TYPE = 4;
+    private static final int NEW_TYPE = 4;
 
-    MyAdapter(Context context, OnRecyclerPositionClickListener listener) {
+    GenericRVAdapterTest(Context context, OnRecyclerPositionClickListener listener) {
         super(context, listener);
     }
 
     @Override
-    protected int getProgressLayout() {
-        return R.layout.progress_view;
+    public int getItemViewType(int position) {
+        if (getItem(position) != null && position % 3 == 0) {
+            return NEW_TYPE;
+        }
+        return super.getItemViewType(position);
     }
 
     @Override
@@ -127,43 +130,22 @@ public class MyAdapter extends GenericRVAdapter<RVModel, OnRecyclerPositionClick
             rvItem2Binding.setItem(model);
         }
     }
-
-    @Override
-    public int getItemViewType(int position) {
-        if (getItem(position) != null && position % 3 == 0) {
-            return NEW_TYPE;
-        }
-        return super.getItemViewType(position);
-    }
 }
 ```
 
 #### MainAcitivy
 
-        AcitivytMainBinding mainBinding = (ActivityMainBinding) getViewDataBinding();
-        mainBinding.setActivityMain(this);
-
-        mainBinding.recyclerview.setLayoutManager(new LinearLayoutManager(this));
+      mainBinding.recyclerview.setLayoutManager(new LinearLayoutManager(this));
         GenericRVAdapterTest adapter = new GenericRVAdapterTest(getBaseContext(), null);
-        adapter.endLessScrolled(mainBinding.recyclerview);
         adapter.addAll(getItems());
         mainBinding.recyclerview.setAdapter(adapter);
 
-        adapter.setOnLoadMoreListener(new OnLoadMoreListener() {
+        mainBinding.recyclerview.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onLoadMore() {
-                adapter.showLoading();
-
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        adapter.hiddenLoading();
-                        adapter.addAll(getItems());
-                    }
-                }, 2500);
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
             }
         });
-    }
 
     private List<RVModel> getItems() {
         return Arrays.asList(new AdapterModel("홍길동", "32", "https://t1.daumcdn.net/cfile/tistory/194599374F7049A901"),
