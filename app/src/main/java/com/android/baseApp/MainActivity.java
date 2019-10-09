@@ -15,10 +15,12 @@ import java.time.chrono.MinguoChronology;
 import java.util.Arrays;
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity<ActivityMainBinding> {
 
     ActivityMainBinding mainBinding;
 
@@ -30,12 +32,12 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mainBinding = (ActivityMainBinding) getViewDataBinding();
-        mainBinding.setActivityMain(this);
     }
 
     @Override
     protected void initView() {
+        mainBinding = getViewDataBinding();
+        mainBinding.setActivityMain(this);
         setToolbar();
         setRecyclerView();
     }
@@ -59,22 +61,13 @@ public class MainActivity extends BaseActivity {
 
         mainBinding.recyclerview.setLayoutManager(new LinearLayoutManager(this));
         GenericRVAdapterTest adapter = new GenericRVAdapterTest(getBaseContext(), null);
-        adapter.endLessScrolled(mainBinding.recyclerview);
         adapter.addAll(getItems());
         mainBinding.recyclerview.setAdapter(adapter);
 
-        adapter.setOnLoadMoreListener(new OnLoadMoreListener() {
+        mainBinding.recyclerview.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onLoadMore() {
-                adapter.showLoading();
-
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        adapter.hiddenLoading();
-                        adapter.addAll(getItems());
-                    }
-                }, 2500);
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
             }
         });
     }

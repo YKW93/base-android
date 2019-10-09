@@ -14,15 +14,18 @@ import androidx.databinding.ViewDataBinding;
 
 public class GenericRVAdapterTest extends GenericRVAdapter<RVModel, OnRecyclerPositionClickListener> {
 
-    public int NEW_TYPE = 4;
+    private static final int NEW_TYPE = 4;
 
     GenericRVAdapterTest(Context context, OnRecyclerPositionClickListener listener) {
         super(context, listener);
     }
 
     @Override
-    protected int getProgressLayout() {
-        return R.layout.progress_view;
+    public int getItemViewType(int position) {
+        if (getItem(position) != null && position % 3 == 0) {
+            return NEW_TYPE;
+        }
+        return super.getItemViewType(position);
     }
 
     @Override
@@ -45,13 +48,5 @@ public class GenericRVAdapterTest extends GenericRVAdapter<RVModel, OnRecyclerPo
             RvItem2Binding rvItem2Binding = (RvItem2Binding) binding;
             rvItem2Binding.setItem(model);
         }
-    }
-
-    @Override
-    public int getItemViewType(int position) {
-        if (getItem(position) != null && position % 3 == 0) {
-            return NEW_TYPE;
-        }
-        return super.getItemViewType(position);
     }
 }
